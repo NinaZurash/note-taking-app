@@ -62,6 +62,7 @@ export async function GET(req: NextRequest) {
     ? parseInt(query.get("token") as string)
     : null;
 
+  console.log(email, token);
   if (!email || !token) {
     return NextResponse.json({ isValid: false }, { status: 400 });
   }

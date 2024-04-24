@@ -51,17 +51,17 @@ export default function EmailVerificationPage() {
   });
   const handleTokenChange = async () => {
     toast({
-      title: "კოდი გაგზავნილია",
-      description: "გთხოვთ შეამოწმოთ ელფოსტა",
+      title: "Code Sent",
+      description: "Please check your email for the verification code",
       variant: "success",
     });
 
-    const email = localStorage.getItem("email");
+    const email = session?.user.email;
 
     if (!email) {
       toast({
-        title: "შეცდომა",
-        description: "დაფიქსირდა შეცდომა, სცადეთ მოგვიანებით",
+        title: "Error",
+        description: "An error occurred, please try again",
         variant: "destructive",
       });
       return;
@@ -78,17 +78,17 @@ export default function EmailVerificationPage() {
     const tokenCode = parseInt(values.verificationCode);
     if (isNaN(tokenCode)) {
       return toast({
-        title: "შეცდომა",
-        description: "კოდი უნდა იყოს ციფრებისგან შემდგარი",
+        title: "Error",
+        description: "Code should be a number",
         variant: "destructive",
       });
     }
-    const email = localStorage.getItem("email");
+    const email = session?.user.email;
 
     if (!email) {
       return toast({
-        title: "შეცდომა",
-        description: "დაფიქსირდა შეცდომა, სცადეთ მოგვიანებით",
+        title: "Error",
+        description: "An error occurred, please try again",
         variant: "destructive",
       });
     }
@@ -96,10 +96,11 @@ export default function EmailVerificationPage() {
       email: email,
       token: tokenCode,
     });
+    console.log(data);
     if (!data.isValid) {
       return toast({
-        title: "შეცდომა",
-        description: "კოდი არასწორია",
+        title: "Error",
+        description: "Invalid code, please try again",
         variant: "destructive",
       });
     }
@@ -109,7 +110,7 @@ export default function EmailVerificationPage() {
   return (
     <Form {...form}>
       <div className="flex flex-col gap-y-7 ">
-        <h1 className="text-[28px] font-bold">იმეილის ვერიფიკაცია</h1>
+        <h1 className="text-[28px] font-bold">Email Verification</h1>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-10"
@@ -124,7 +125,7 @@ export default function EmailVerificationPage() {
                     <div className="flex items-center justify-center rounded-lg border">
                       <Input
                         className="m-1 border-none focus:ring-transparent focus-visible:ring-transparent"
-                        placeholder="ერთჯერადი კოდი"
+                        placeholder="Verification Code"
                         {...field}
                       />
                       <Button
@@ -133,7 +134,7 @@ export default function EmailVerificationPage() {
                         onClick={handleTokenChange}
                         className="m-1 bg-[#eef6fe] text-[#2680eb] hover:cursor-pointer hover:bg-blue-200"
                       >
-                        კოდის მიღება
+                        Send Code
                       </Button>
                     </div>
                   </FormControl>
@@ -142,13 +143,15 @@ export default function EmailVerificationPage() {
               )}
             />
           </div>
-          {/* <SubmitButton title="გაგრძელება" /> */}
+          <Button type="submit" className="bg-sky-600 text-white">
+            Verify
+          </Button>
         </form>
         <Link
           className="ml-auto p-3 text-sky-600 hover:text-sky-800"
           href={`${BASE_URL}/sign-in`}
         >
-          დაბრუნება
+          Back to Sign In
         </Link>
       </div>
     </Form>

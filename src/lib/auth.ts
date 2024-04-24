@@ -24,8 +24,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.username || !credentials?.password) {
           return null;
         }
-        if (credentials.username.includes("@")) {
-        }
+        console.log(credentials);
         const existingUser = credentials.username.includes("@")
           ? await db.user.findUnique({
               where: { email: credentials.username },

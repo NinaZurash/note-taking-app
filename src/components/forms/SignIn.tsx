@@ -45,7 +45,7 @@ const SignInForm = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const user = await signIn("credentials", {
-      email: values.username,
+      username: values.username,
       password: values.password,
       redirect: false,
     });
@@ -67,7 +67,7 @@ const SignInForm = () => {
   return (
     <Form {...form}>
       <div className="flex flex-col gap-y-8 ">
-        <h1 className="text-[35px] font-bold">Authorisation</h1>
+        <h1 className="text-[35px] font-bold">Sign in</h1>
         <form
           className="flex flex-col gap-8"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -107,15 +107,18 @@ const SignInForm = () => {
               )}
             />
           </div>
-          <div className="text-right text-[17px] font-medium text-slate-700">
+          <div className="text-right text-sm font-medium text-slate-700">
             <Link href="/forgot-password">Forgot password?</Link>
           </div>
           <Button>Sign in</Button>
         </form>
 
-        <p className="flex justify-center gap-x-2 text-center text-lg text-gray-400">
+        <p className="flex justify-center gap-x-2 text-center  text-gray-400">
           <span> Dont have an account?</span>
-          <Link className="text-blue-500 hover:underline" href="/sign-up">
+          <Link
+            className="text-blue-500 hover:underline"
+            href={`${BASE_URL}/sign-up`}
+          >
             - Create an account
           </Link>
         </p>

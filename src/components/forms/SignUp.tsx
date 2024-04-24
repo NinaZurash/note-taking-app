@@ -80,7 +80,7 @@ export default function SignUpForm() {
   return (
     <Form {...form}>
       <div className=" flex flex-col gap-y-8 ">
-        <h1 className="text-[35px] font-bold">Authorisation</h1>
+        <h1 className="text-[35px] font-bold">Sign up</h1>
         <form
           className="flex flex-col gap-8"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -91,7 +91,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         className="h-14"
@@ -107,7 +107,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         className="h-14"
@@ -125,7 +125,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         type="email"
@@ -142,7 +142,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="username"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         className="h-14"
@@ -161,7 +161,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         className="h-14"
@@ -179,7 +179,7 @@ export default function SignUpForm() {
                 control={form.control}
                 name="confirmPassword"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-[20vw]">
                     <FormControl>
                       <Input
                         className="h-14"
@@ -194,16 +194,16 @@ export default function SignUpForm() {
               />
             </div>
           </div>
-          <div className="text-right text-sm font-medium text-slate-700">
-            <Link href="/forgot-password">Forgot password?</Link>
-          </div>
-          <Button>Sign in</Button>
+          <Button>Sign Up</Button>
         </form>
 
         <p className="flex justify-center gap-x-2 text-center  text-gray-400">
-          <span> Dont have an account?</span>
-          <Link className="text-blue-500 hover:underline" href="/sign-up">
-            - Create an account
+          <span>Already have an account?</span>
+          <Link
+            className="text-blue-500 hover:underline"
+            href={`${BASE_URL}/sign-in`}
+          >
+            - Sign in
           </Link>
         </p>
       </div>
