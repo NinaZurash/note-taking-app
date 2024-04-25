@@ -4,6 +4,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./db";
 import { compare } from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -24,7 +28,6 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.username || !credentials?.password) {
           return null;
         }
-        console.log(credentials);
         const existingUser = credentials.username.includes("@")
           ? await db.user.findUnique({
               where: { email: credentials.username },
@@ -42,7 +45,6 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) {
           return null;
         }
-        console.log("is successfully");
         return {
           id: existingUser.id,
           email: existingUser.email,
@@ -57,7 +59,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user, token }) {
+    async session({ session, token }) {
       return {
         ...session,
         user: {
@@ -79,5 +81,10 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+    // async signIn({ user }) {
+    //   return user.emailVerified
+    //     ? `${BASE_URL}`
+    //     : `${BASE_URL}/email-verification`;
+    // },
   },
 };

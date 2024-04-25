@@ -32,7 +32,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const SignInForm = () => {
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { data: session, status, update } = useSession();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -43,6 +43,13 @@ const SignInForm = () => {
     },
   });
 
+  // if (session?.user) {
+  //   return router.push(`${BASE_URL}/`);
+  // }
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const user = await signIn("credentials", {
       username: values.username,
@@ -50,17 +57,17 @@ const SignInForm = () => {
       redirect: false,
     });
 
-    if (!user || user?.error) {
+    console.log(user);
+
+    if (!user || user.status === 401) {
       return toast({
         title: "Error",
         description: "Email or password is incorrect",
         variant: "destructive",
       });
     } else {
-      // await update();
-      if (session && session.user.emailVerified)
-        return router.push(`${BASE_URL}/`);
-      router.push(`${BASE_URL}/email-verification`);
+      return router.push(`${BASE_URL}/email-verification`);
+      //   // return router.push(`${BASE_URL}/`);
     }
   };
 
