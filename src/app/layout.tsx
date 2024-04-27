@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 import { Roboto } from "next/font/google";
+import { NotesProvider } from "@/providers/NotesProvider";
 
 const fontSans = Roboto({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
         <AuthProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <NotesProvider>{children}</NotesProvider>
+          </ReactQueryProvider>
         </AuthProvider>
         <Toaster />
       </body>

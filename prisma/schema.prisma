@@ -27,4 +27,25 @@ model User {
   updatedAt              DateTime   @updatedAt @db.Timestamptz(6)
   resetPasswordToken     Int? @unique
   resetPasswordExpires   DateTime?
+  notes                   Note[] 
+}
+
+
+model Category {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  notes    Note[]  @relation("NoteToCategory")
+}
+
+
+model Note {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  categories   Category[] @relation("NoteToCategory")
+  isPublic     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt @db.Timestamptz(6)
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
 }
