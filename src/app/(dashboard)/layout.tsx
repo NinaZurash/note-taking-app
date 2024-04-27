@@ -11,7 +11,7 @@ export default function Layout({
   return (
     <div>
       <SideBar />
-      <div className="ml-80 py-4">{children}</div>
+      <div className="ml-72 py-4">{children}</div>
     </div>
   );
 }

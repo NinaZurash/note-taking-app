@@ -28,3 +28,15 @@ export function useGetCategories() {
     },
   });
 }
+
+export function useDeleteCategory() {
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const response = await fetch(`${baseURL}/api/category?id=${id}`, {
+        method: "DELETE",
+      });
+
+      return response.json();
+    },
+  });
+}

@@ -1,7 +1,11 @@
 "use client";
 
 import { useToast } from "@/components/ui/use-toast";
-import { useAddCategory, useGetCategories } from "@/services/manageCategories";
+import {
+  useAddCategory,
+  useDeleteCategory,
+  useGetCategories,
+} from "@/services/manageCategories";
 import { Category, Note } from "@prisma/client";
 import {
   ReactNode,
@@ -17,6 +21,7 @@ type NotesContextType = {
   notes: Note[];
   setNotes: (notes: Note[]) => void;
   createCategory: (category: string) => void;
+  deleteCategory: (id: number) => void;
 };
 
 const NotesContext = createContext<NotesContextType>({
@@ -25,6 +30,7 @@ const NotesContext = createContext<NotesContextType>({
   notes: [],
   setNotes: () => {},
   createCategory: () => {},
+  deleteCategory: () => {},
 });
 
 type Props = { children: ReactNode };
@@ -34,6 +40,7 @@ export const NotesProvider = ({ children }: Props) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const { mutateAsync: getCategories } = useGetCategories();
   const { mutateAsync: addCategory } = useAddCategory();
+  const { mutateAsync: removeCategory } = useDeleteCategory();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -71,9 +78,37 @@ export const NotesProvider = ({ children }: Props) => {
       });
     }
   };
+
+  const deleteCategory = async (id: number) => {
+    try {
+      const response = await removeCategory(id);
+      if (response.status === 200) {
+        setCategories(categories.filter((category) => category.id !== id));
+        return toast({
+          title: "Success",
+          description: "Category deleted successfully",
+          variant: "success",
+        });
+      }
+    } catch {
+      toast({
+        title: "Error",
+        description: "Something went wrong when deleting category",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <NotesContext.Provider
-      value={{ categories, setCategories, notes, setNotes, createCategory }}
+      value={{
+        categories,
+        setCategories,
+        notes,
+        setNotes,
+        createCategory,
+        deleteCategory,
+      }}
     >
       {children}
     </NotesContext.Provider>

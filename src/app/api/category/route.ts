@@ -47,3 +47,38 @@ export async function GET() {
     });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const query = req.nextUrl.searchParams;
+  const id = query.get("id");
+  const categoryHasNotes = await db.category
+    .findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: { notes: true },
+    })
+    .then((category) => category && category.notes.length > 0);
+  if (categoryHasNotes) {
+    return NextResponse.json({
+      message: "Category has notes, please delete notes first",
+      status: 400,
+    });
+  }
+  try {
+    await db.category.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    return NextResponse.json({
+      message: "Category deleted successfully",
+      status: 200,
+    });
+  } catch {
+    return NextResponse.json({
+      message: "Something wrong when deleting category",
+      status: 500,
+    });
+  }
+}

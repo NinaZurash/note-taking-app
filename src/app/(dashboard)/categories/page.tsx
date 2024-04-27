@@ -4,36 +4,72 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNotes } from "@/providers/NotesProvider";
 import { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+
+const FormSchema = z.object({
+  name: z.string().min(1),
+});
 
 export default function CategoryPage() {
-  const { createCategory, categories } = useNotes();
-  const [newCategory, setNewCategory] = useState("");
-  const handleAddCategory = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    createCategory(newCategory);
-    setNewCategory("");
+  const { createCategory, categories, deleteCategory } = useNotes();
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof FormSchema>) => {
+    createCategory(values.name.toLowerCase());
+    form.reset();
   };
 
+  const removeCategory = (id: number) => {
+    deleteCategory(Number(id));
+  };
   return (
     <div className="bg-white m-10 dark:bg-gray-950 p-6 rounded-lg shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Manage Categories</h2>
-        <form className="flex items-center gap-4">
-          <Input
-            className="bg-gray-100 dark:bg-gray-800 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
-            placeholder="New Category"
-            type="text"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
-          />
-          <Button
-            className="bg-primary-500 hover:bg-primary-600  border rounded-full  text-zinc-700 py-2 px-4"
-            size="sm"
-            onClick={handleAddCategory}
-          >
-            Add
-          </Button>
-        </form>
+        <Form {...form}>
+          <form className="flex gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      className="bg-gray-100 dark:bg-gray-800 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
+                      placeholder="New Category"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="bg-primary-500 hover:bg-primary-600  border rounded-full  text-zinc-700 py-2 px-4"
+              size="sm"
+            >
+              Add
+            </Button>
+          </form>
+        </Form>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {categories.map((category) => (
@@ -42,12 +78,13 @@ export default function CategoryPage() {
             className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between"
           >
             <span className="text-gray-700 dark:text-gray-300 font-medium">
-              {category.name}
+              {category.name[0].toUpperCase() + category.name.slice(1)}
             </span>
             <Button
               className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
               size="icon"
               variant="ghost"
+              onClick={() => removeCategory(category.id)}
             >
               <TrashIcon className="h-5 w-5" />
             </Button>
