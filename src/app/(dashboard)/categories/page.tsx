@@ -31,6 +31,7 @@ export default function CategoryPage() {
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     createCategory(values.name.toLowerCase());
+
     form.reset();
   };
 
@@ -72,24 +73,26 @@ export default function CategoryPage() {
         </Form>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between"
-          >
-            <span className="text-gray-700 dark:text-gray-300 font-medium">
-              {category.name[0].toUpperCase() + category.name.slice(1)}
-            </span>
-            <Button
-              className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
-              size="icon"
-              variant="ghost"
-              onClick={() => removeCategory(category.id)}
+        {categories &&
+          categories.map((category) => (
+            <div
+              key={category.id}
+              style={{ backgroundColor: category.color }}
+              className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between"
             >
-              <TrashIcon className="h-5 w-5" />
-            </Button>
-          </div>
-        ))}
+              <span className="text-gray-700 dark:text-gray-300 font-medium">
+                {category.name[0].toUpperCase() + category.name.slice(1)}
+              </span>
+              <Button
+                className="text-gray-500 hover:bg-inherit hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
+                size="icon"
+                variant="ghost"
+                onClick={() => removeCategory(category.id)}
+              >
+                <TrashIcon className="h-5 w-5" />
+              </Button>
+            </div>
+          ))}
       </div>
     </div>
   );

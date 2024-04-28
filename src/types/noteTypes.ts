@@ -1,13 +1,14 @@
-export type Category = {
-  id: number;
-  name: string;
+import { Category, Note, User } from "@prisma/client";
+
+export type NoteType = Note & {
+  categories: Category[];
+  user: User;
 };
 
-export type Note = {
-  id: number;
+export type NoteInput = {
   title: string;
   description: string;
-  categories: Category[];
   isPublic: boolean;
-  userId: number;
+  categories: Category[];
+  userId?: number;
 };

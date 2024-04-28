@@ -48,7 +48,7 @@ export default function EmailVerificationForm() {
   useEffect(() => {
     console.log(status);
     if (session?.user?.emailVerified) {
-      router.push("/");
+      router.push(`${BASE_URL}/home`);
     }
   }, [session, router, status]);
 
@@ -112,7 +112,7 @@ export default function EmailVerificationForm() {
       });
     }
 
-    router.push(`${BASE_URL}/`);
+    router.push(`${BASE_URL}/home`);
   };
 
   return (

@@ -1,3 +1,4 @@
+import { BADGE_COLORS } from "@/constants/badgeColors";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,8 +20,11 @@ export async function POST(req: NextRequest) {
     const newCategory = await db.category.create({
       data: {
         name,
+        color:
+          BADGE_COLORS[Math.floor(Math.random() * BADGE_COLORS.length)].bgColor,
       },
     });
+
     return NextResponse.json({
       category: newCategory,
       status: 201,
