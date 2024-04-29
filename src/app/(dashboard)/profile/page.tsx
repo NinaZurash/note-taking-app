@@ -1,3 +1,5 @@
+import Profile from "@/components/dashboard/Profile";
+
 export default function page() {
-  return <div>profile</div>;
+  return <Profile />;
 }

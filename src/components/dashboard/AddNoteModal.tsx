@@ -71,7 +71,13 @@ const formSchema = z.object({
   categories: z.array(z.number()),
 });
 
-export default function AddNoteModal({ note }: { note?: NoteType }) {
+export default function AddNoteModal({
+  note,
+  disabled = false,
+}: {
+  note?: NoteType;
+  disabled?: boolean;
+}) {
   const [chosenCategories, setChosenCategories] = useState<Category[]>([]);
   const [open, setOpen] = useState(false);
   const { categories, createNote, updateNote } = useNotes();
@@ -142,7 +148,7 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
       {note ? (
         <DialogTrigger asChild>
           <Button
-            title="view/edit note"
+            title={disabled ? "view" : "view/edit note"}
             className="text-sm hover:bg-transparent bg-transparent text-black p-0 font-semibold hover:text-sky-700"
           >
             <EditIcon size={20} />
@@ -169,7 +175,7 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Title" {...field} />
+                    <Input disabled={disabled} placeholder="Title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,7 +187,11 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Description" {...field} />
+                    <Textarea
+                      disabled={disabled}
+                      placeholder="Description"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,6 +206,7 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
                   <FormLabel>Public note</FormLabel>
                   <FormControl>
                     <Checkbox
+                      disabled={disabled}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -227,7 +238,12 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
                 </p>
                 <DropdownMenu open={open} onOpenChange={setOpen}>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button
+                      disabled={disabled}
+                      title="add category"
+                      variant="ghost"
+                      size="sm"
+                    >
                       +
                     </Button>
                   </DropdownMenuTrigger>
@@ -278,9 +294,11 @@ export default function AddNoteModal({ note }: { note?: NoteType }) {
                 </DropdownMenu>
               </div>
             )}
-            <Button className="w-1/4 mx-auto mr-0" type="submit">
-              {note ? "Update" : "Submit"}
-            </Button>
+            {!disabled && (
+              <Button className="w-1/4 mx-auto mr-0" type="submit">
+                {note ? "Update" : "Submit"}
+              </Button>
+            )}
           </form>
         </Form>
       </DialogContent>

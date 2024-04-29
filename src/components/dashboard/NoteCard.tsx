@@ -69,7 +69,7 @@ export default function NoteCard({ note }: { note: NoteType }) {
         </div>
       </CardContent>
       <CardFooter>
-        {session && Number(session.user.id) === note.userId && (
+        {session && Number(session.user.id) === note.userId ? (
           <div className="flex w-full items-center  justify-between">
             <AddNoteModal note={note} />
             <Button
@@ -81,6 +81,10 @@ export default function NoteCard({ note }: { note: NoteType }) {
             >
               <TrashIcon size={20} />
             </Button>
+          </div>
+        ) : (
+          <div className="flex w-full items-center  justify-between">
+            <AddNoteModal note={note} disabled={true} />
           </div>
         )}
       </CardFooter>

@@ -50,6 +50,8 @@ export const authOptions: NextAuthOptions = {
           email: existingUser.email,
           username: existingUser.username,
           emailVerified: existingUser.emailVerified,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
         };
       },
     }),
@@ -67,6 +69,8 @@ export const authOptions: NextAuthOptions = {
           id: token.sub,
           emailVerified: token.emailVerified,
           username: token.username,
+          firstName: token.firstName,
+          lastName: token.lastName,
         },
       };
     },
@@ -77,14 +81,11 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           emailVerified: user.emailVerified,
           username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
         };
       }
       return token;
     },
-    // async signIn({ user }) {
-    //   return user.emailVerified
-    //     ? `${BASE_URL}`
-    //     : `${BASE_URL}/email-verification`;
-    // },
   },
 };

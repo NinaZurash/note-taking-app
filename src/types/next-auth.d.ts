@@ -6,6 +6,8 @@ declare module "next-auth" {
     emailVerified: Date | null;
     id: number;
     username: string;
+    firstName: string | null;
+    lastName: string | null;
   }
   interface Session {
     user: User & {
