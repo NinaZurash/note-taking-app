@@ -70,7 +70,7 @@ export default function Profile() {
           <span className="text-gray-500">{username}</span>
         </div>
       </div>
-      <div className="space-y-4 w-1/2 ">
+      <div className="space-y-10 w-1/2 ">
         <div className="space-y-2">
           <h2 className="text-xl font-bold">Security</h2>
         </div>

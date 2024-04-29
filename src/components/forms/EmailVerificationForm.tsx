@@ -91,7 +91,7 @@ export default function EmailVerificationForm() {
       });
     }
     const email = session?.user.email;
-    console.log(email);
+
     if (!email) {
       return toast({
         title: "Error",
@@ -103,7 +103,7 @@ export default function EmailVerificationForm() {
       email: email,
       token: tokenCode,
     });
-    console.log(data);
+
     if (!data.isValid) {
       return toast({
         title: "Error",

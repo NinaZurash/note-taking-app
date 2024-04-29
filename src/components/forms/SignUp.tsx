@@ -62,7 +62,7 @@ export default function SignUpForm() {
     console.log(response);
 
     if (response && response.user) {
-      router.push(`${BASE_URL}/email-verification`);
+      router.push(`${BASE_URL}/sign-in`);
       toast({
         title: "Success",
         description: "Please check your email to verify your account",
